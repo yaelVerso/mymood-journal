@@ -14,6 +14,7 @@
 </head>
 
 <body>
+
     <div class="appbar">
         <h1 class="logo-name">Moodi</h1>
         <button id="logoutBtn" class="logout-btn">Logout</button>
@@ -25,27 +26,46 @@
         </h1>
     </section>
 
-    <section class="content">
+    <section>
     <div class="log-entry">
         <form id="moodForm"> <h2 class="title">Log Today's Mood</h2>
             <div class="mood">
                 <div class="mood-options">
-                    <button type="button" class="mood-btn" data-mood="Happy">😄 Happy</button>
-                        <button type="button" class="mood-btn" data-mood="Sad">😢 Sad</button>
-                        <button type="button" class="mood-btn" data-mood="Tired">😴 Tired</button>
-                        <button type="button" class="mood-btn" data-mood="Stressed">😤 Stressed</button>
-                        <button type="button" class="mood-btn" data-mood="Excited">🤩 Excited</button>
-                        <button type="button" class="mood-btn" data-mood="Calm">😌 Calm</button>
+                    <div class="mood-wrapper"><button type="button" class="mood-btn" data-mood="Happy">😄</button>
+                    <p class="mood-label">Happy</p></div>
                 </div>
+                <div class="mood-options">
+                    <div class="mood-wrapper"><button type="button" class="mood-btn" data-mood="Sad">😢</button>
+                    <p class="mood-label">Sad</p></div>
+                </div>
+                <div class="mood-options">
+                    <div class="mood-wrapper"><button type="button" class="mood-btn" data-mood="Tired">😴</button>
+                    <p class="mood-label">Tired</p></div>
+                </div>        
+                <div class="mood-options">
+                    <div class="mood-wrapper"><button type="button" class="mood-btn" data-mood="Stressed">😤</button>
+                    <p class="mood-label">Stressed</p></div>
+                </div>
+                <div class="mood-options">
+                    <div class="mood-wrapper"><button type="button" class="mood-btn" data-mood="Excited">🤩</button>
+                    <p class="mood-label">Excited</p></div>
+                </div>        
+                <div class="mood-options">
+                    <div class="mood-wrapper"><button type="button" class="mood-btn" data-mood="Calm">😌</button>
+                    <p class="mood-label">Calm</p></div>
+                </div>        
                 <input type="hidden" id="date" name="date" required>
                 <input type="hidden" id="selectedMood" required>
-            </div>
+                </div>
             <h3 class="subtitle">Notes</h3>
             <div class="notes">
                 <textarea id="note" name="description" rows="4" placeholder="How was your day? What's on your mind?"
                     required></textarea>
             </div>
             <button type="submit" class="save-btn">Save</button>
+            </div>
+                
+            
         </form> </div>
     </section>
 
@@ -62,6 +82,17 @@
             <!-- Entries will be displayed here -->
         </div>
     </section>
+
+
+    <!-- Popup Modal -->
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <span id="popupCloseBtn" class="popup-close-btn">&times;</span>
+        <h3 id="popupMessage">How about trying something new?</h3>
+        <p id="recommendedActivity"></p>
+    </div>
+</div>
+
 
 
     <script src="firebase-config.js"></script>
