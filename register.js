@@ -1,4 +1,3 @@
-// Register functionality
 document.addEventListener('DOMContentLoaded', function() {
     const registerForm = document.getElementById('registerForm');
     
@@ -20,15 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         try {
             await firebase.auth().createUserWithEmailAndPassword(email, password);
-            // Redirect will happen automatically
         } catch (error) {
             alert('Registration failed: ' + error.message);
-            registerBtn.textContent = '🌟 Create Account';
+            registerBtn.textContent = 'Create Account';
             registerBtn.disabled = false;
         }
     });
     
-    // Check if user is already logged in
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             window.location.href = 'journal.html';
