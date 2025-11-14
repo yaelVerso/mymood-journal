@@ -4,7 +4,6 @@ class MoodJournal {
         this.selectedMood = null;
         this.currentUser = null;
         this.init();
-        this.initMoodSelection();
     }
 
     /* ------------------ Initialization ------------------ */
@@ -27,29 +26,29 @@ class MoodJournal {
     }
 
     setupEventListeners() {
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        firebase.auth().signOut();
-    }); 
-
-    // Mood selection
-    document.querySelectorAll('.mood-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            this.selectMood(e.target);
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            firebase.auth().signOut();
         });
-    });
 
-    // Form submission
-    const moodForm = document.getElementById('moodForm'); // NOW IT EXISTS
-    if (moodForm) { // Added check
-        moodForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.saveEntry();
+        // Mood selection
+        document.querySelectorAll('.mood-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.selectMood(e.target);
+            });
         });
+
+        // Form submission
+        const moodForm = document.getElementById('moodForm');
+        if (moodForm) {
+            moodForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.saveEntry();
+            });
+        }
     }
-}
 
-    // Uncomment this if you want the date to auto-set to today
+    // Date to auto-set to today
     setDefaultDate() {
         const today = new Date().toISOString().split('T')[0];
         const dateInput = document.getElementById('date');
@@ -95,8 +94,12 @@ class MoodJournal {
         };
 
         try {
+            // Save to Firestore
             await firebase.firestore().collection('moodEntries').add(entry);
-            
+
+            // ⭐ FIX #2 — Show popup after saving
+            showPopup(this.selectedMood);
+
             // Reset form
             document.getElementById('moodForm').reset();
             document.querySelectorAll('.mood-btn').forEach(btn => {
@@ -122,7 +125,7 @@ class MoodJournal {
                 .where('userId', '==', this.currentUser.uid)
                 .orderBy('timestamp', 'desc')
                 .get();
-            
+
             const entries = [];
             snapshot.forEach(doc => {
                 entries.push({
@@ -140,7 +143,6 @@ class MoodJournal {
 
     displayMoodHistory(entries) {
         const historyContainer = document.getElementById('moodHistory');
-        
         if (entries.length === 0) {
             historyContainer.innerHTML = '<p style="text-align: center; color: #7f8c8d;">No entries yet. Start by adding your first mood entry!</p>';
             return;
@@ -153,9 +155,24 @@ class MoodJournal {
                     <div class="entry-date">${this.formatDate(entry.date)}</div>
                     <div class="entry-note">${entry.note}</div>
                 </div>
-                <button class="delete-btn" onclick="moodJournal.deleteEntry('${entry.timestamp}')">🗑️</button>
+                <button class="delete-btn" onclick="moodJournal.deleteEntry('${entry.id}')">🗑️</button>
             </div>
         `).join('');
+    }
+
+    async deleteEntry(id) {
+        if (!this.currentUser) return;
+
+        if (confirm('Are you sure you want to delete this entry?')) {
+            try {
+                await firebase.firestore().collection('moodEntries').doc(id).delete();
+                this.loadMoodHistory();
+                alert('Entry deleted successfully!');
+            } catch (error) {
+                console.error('Error deleting entry:', error);
+                alert('Error deleting entry. Please try again.');
+            }
+        }
     }
 
     displayMoodSummary(entries) {
@@ -173,21 +190,6 @@ class MoodJournal {
             </div>
         `).join('');
     }
-
-    async deleteEntry(id) { 
-    if (!this.currentUser) return;
-
-    if (confirm('Are you sure you want to delete this entry?')) {
-        try {
-            await firebase.firestore().collection('moodEntries').doc(id).delete();
-            this.loadMoodHistory();
-            alert('Entry deleted successfully!');
-        } catch (error) {
-            console.error('Error deleting entry:', error);
-            alert('Error deleting entry. Please try again.');
-        }
-    }
-}
 
     /* ------------------ Utilities ------------------ */
     getMoodEmoji(mood) {
@@ -220,32 +222,59 @@ class MoodJournal {
 }
 
 /* ------------------ Extra Utility Functions ------------------ */
-function formatDate(dateString) {
-    const options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long'
-    };
-    return new Date(dateString).toLocaleDateString('en-US', options);
-}
 
 function displayCurrentDate() {
     const today = new Date();
-    const options = {
+    const formattedDate = today.toLocaleDateString('en-US', {
         weekday: 'long',
         month: 'long',
         day: 'numeric'
-    };
-    const formattedDate = today.toLocaleDateString('en-US', options);
+    });
+
     const dateElement = document.getElementById('currentDate');
     if (dateElement) {
         dateElement.textContent = formattedDate;
     }
 }
 
-// Display current date on load
 window.onload = displayCurrentDate;
+
+/* ------------------ POPUP CODE (Fixed) ------------------ */
+
+// Activity recommendations based on mood
+const moodActivities = {
+    "Happy": "Why not go for a walk in the park, meet a friend, or watch your favorite comedy show?",
+    "Sad": "Maybe try writing in a journal, watching an uplifting movie, or calling a loved one?",
+    "Tired": "A nice nap or listening to relaxing music might help you recharge.",
+    "Stressed": "Try doing some deep breathing, meditation, or watching a calming video.",
+    "Excited": "How about planning something fun with friends, starting a creative project, or going on an adventure?",
+    "Calm": "Enjoy a peaceful walk, read a good book, or practice mindfulness."
+};
+
+// Popup elements
+const popup = document.getElementById('popup');
+const popupMessage = document.getElementById('popupMessage');
+const recommendedActivity = document.getElementById('recommendedActivity');
+const popupCloseBtn = document.getElementById('popupCloseBtn');
+
+// Show the popup with mood-based activity
+function showPopup(mood) {
+    popupMessage.innerText = `It seems like you're: ${mood}`;
+    recommendedActivity.innerText = moodActivities[mood] || "Try something new today!";
+    popup.style.display = "block";
+}
+
+// Close popup
+popupCloseBtn.addEventListener('click', function () {
+    popup.style.display = "none";
+});
+
+// Close when clicking outside
+window.addEventListener('click', function (event) {
+    if (event.target === popup) {
+        popup.style.display = "none";
+    }
+});
 
 /* ------------------ Initialize App ------------------ */
 const moodJournal = new MoodJournal();
