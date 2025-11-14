@@ -1,71 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyMood Journal</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Moodi</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 </head>
+
 <body>
-    <div class="container">
-        <header class="app-header">
-            <div class="user-info">
-                <h1>📔 MyMood Journal</h1>
-                <p>Welcome, <span id="userName">User</span>!</p>
-            </div>
-            <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
-        </header>
+    <div class="appbar">
+        <h1 class="logo-name">Moodi</h1>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </div>
 
-        <section class="mood-form-section">
-            <h2>🧾 How are you feeling today?</h2>
-            <form id="moodForm" class="mood-form">
-                <div class="form-group">
-                    <label for="date">Date:</label>
-                    <input type="date" id="date" required>
-                </div>
+    <section class="greetings">
+        <h1>Hello, <span id="userName">[User]</span>!<br>
+            <span class="sub-greet">Today is <span id="currentDate">[date]</span>. How are you feeling?</span>
+        </h1>
+    </section>
 
-                <div class="form-group">
-                    <label>Mood:</label>
-                    <div class="mood-options">
-                        <button type="button" class="mood-btn" data-mood="Happy">😄 Happy</button>
+    <section class="content">
+    <div class="log-entry">
+        <form id="moodForm"> <h2 class="title">Log Today's Mood</h2>
+            <div class="mood">
+                <div class="mood-options">
+                    <button type="button" class="mood-btn" data-mood="Happy">😄 Happy</button>
                         <button type="button" class="mood-btn" data-mood="Sad">😢 Sad</button>
                         <button type="button" class="mood-btn" data-mood="Tired">😴 Tired</button>
                         <button type="button" class="mood-btn" data-mood="Stressed">😤 Stressed</button>
                         <button type="button" class="mood-btn" data-mood="Excited">🤩 Excited</button>
                         <button type="button" class="mood-btn" data-mood="Calm">😌 Calm</button>
-                    </div>
-                    <input type="hidden" id="selectedMood" required>
                 </div>
-
-                <div class="form-group">
-                    <label for="note">Journal Entry:</label>
-                    <textarea id="note" placeholder="How was your day? What's on your mind?" rows="4" required></textarea>
-                </div>
-
-                <button type="submit" class="save-btn">💾 Save Entry</button>
-            </form>
-        </section>
-
-        <section class="mood-summary-section">
-            <h2>📊 Mood Summary</h2>
-            <div id="moodSummary" class="mood-summary">
-                <!-- Summary will be generated here -->
+                <input type="hidden" id="date" name="date" required>
+                <input type="hidden" id="selectedMood" required>
             </div>
-        </section>
-
-        <section class="mood-history-section">
-            <h2>📅 Mood History</h2>
-            <div id="moodHistory" class="mood-history">
-                <!-- Entries will be displayed here -->
+            <h3 class="subtitle">Notes</h3>
+            <div class="notes">
+                <textarea id="note" name="description" rows="4" placeholder="How was your day? What's on your mind?"
+                    required></textarea>
             </div>
-        </section>
-    </div>
+            <button type="submit" class="save-btn">Save</button>
+        </form> </div>
+    </section>
+
+    <section class="mood-summary-section">
+        <h2 class="title">Mood Summary</h2>
+        <div id="moodSummary" class="mood-summary">
+            <!-- Summary will be generated here -->
+        </div>
+    </section>
+
+    <section class="mood-history-section">
+        <h2 class="title"> Mood History</h2>
+        <div id="moodHistory" class="mood-history">
+            <!-- Entries will be displayed here -->
+        </div>
+    </section>
+
 
     <script src="firebase-config.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

@@ -4,8 +4,10 @@ class MoodJournal {
         this.selectedMood = null;
         this.currentUser = null;
         this.init();
+        this.initMoodSelection();
     }
 
+    /* ------------------ Initialization ------------------ */
     init() {
         this.checkAuth();
         this.setupEventListeners();
@@ -19,36 +21,44 @@ class MoodJournal {
                 document.getElementById('userName').textContent = user.email.split('@')[0];
                 this.loadMoodHistory();
             } else {
-                window.location.href = 'index.html';
+                window.location.href = 'login.html';
             }
         });
     }
 
     setupEventListeners() {
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            firebase.auth().signOut();
-        });
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        firebase.auth().signOut();
+    }); 
 
-        // Mood selection
-        document.querySelectorAll('.mood-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                this.selectMood(e.target);
-            });
+    // Mood selection
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            this.selectMood(e.target);
         });
+    });
 
-        // Form submission
-        document.getElementById('moodForm').addEventListener('submit', (e) => {
+    // Form submission
+    const moodForm = document.getElementById('moodForm'); // NOW IT EXISTS
+    if (moodForm) { // Added check
+        moodForm.addEventListener('submit', (e) => {
             e.preventDefault();
             this.saveEntry();
         });
     }
+}
 
+    // Uncomment this if you want the date to auto-set to today
     setDefaultDate() {
         const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').value = today;
+        const dateInput = document.getElementById('date');
+        if (dateInput) {
+            dateInput.value = today;
+        }
     }
 
+    /* ------------------ Mood Selection ------------------ */
     selectMood(button) {
         document.querySelectorAll('.mood-btn').forEach(btn => {
             btn.classList.remove('active');
@@ -143,7 +153,7 @@ class MoodJournal {
                     <div class="entry-date">${this.formatDate(entry.date)}</div>
                     <div class="entry-note">${entry.note}</div>
                 </div>
-                <button class="delete-btn" onclick="moodJournal.deleteEntry('${entry.id}')">🗑️ Delete</button>
+                <button class="delete-btn" onclick="moodJournal.deleteEntry('${entry.timestamp}')">🗑️</button>
             </div>
         `).join('');
     }
@@ -164,18 +174,22 @@ class MoodJournal {
         `).join('');
     }
 
-    async deleteEntry(entryId) {
-        if (confirm('Are you sure you want to delete this entry?')) {
-            try {
-                await firebase.firestore().collection('moodEntries').doc(entryId).delete();
-                this.loadMoodHistory();
-            } catch (error) {
-                console.error('Error deleting entry:', error);
-                alert('Error deleting entry. Please try again.');
-            }
+    async deleteEntry(id) { 
+    if (!this.currentUser) return;
+
+    if (confirm('Are you sure you want to delete this entry?')) {
+        try {
+            await firebase.firestore().collection('moodEntries').doc(id).delete();
+            this.loadMoodHistory();
+            alert('Entry deleted successfully!');
+        } catch (error) {
+            console.error('Error deleting entry:', error);
+            alert('Error deleting entry. Please try again.');
         }
     }
+}
 
+    /* ------------------ Utilities ------------------ */
     getMoodEmoji(mood) {
         const emojiMap = {
             'Happy': '😄',
@@ -188,16 +202,50 @@ class MoodJournal {
         return emojiMap[mood] || '😐';
     }
 
-    formatDate(dateString) {
-        const options = { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric',
-            weekday: 'long'
-        };
-        return new Date(dateString).toLocaleDateString('en-US', options);
+    formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    }
+
+    resetForm() {
+        document.getElementById('note').value = '';
+        document.getElementById('date').value = '';
+        document.querySelectorAll('.mood-container div').forEach(c => c.classList.remove('active'));
+        this.selectedMood = null;
     }
 }
 
-// Initialize the app
+/* ------------------ Extra Utility Functions ------------------ */
+function formatDate(dateString) {
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+    };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+}
+
+function displayCurrentDate() {
+    const today = new Date();
+    const options = {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric'
+    };
+    const formattedDate = today.toLocaleDateString('en-US', options);
+    const dateElement = document.getElementById('currentDate');
+    if (dateElement) {
+        dateElement.textContent = formattedDate;
+    }
+}
+
+// Display current date on load
+window.onload = displayCurrentDate;
+
+/* ------------------ Initialize App ------------------ */
 const moodJournal = new MoodJournal();
