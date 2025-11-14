@@ -5,174 +5,117 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #FFF7E9 0%, #E6F4F1 100%);
-    min-height: 100vh;
-    color: #333;
+    background-color: #F9F9FA;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Auth Pages */
-.auth-section {
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    max-width: 500px;
-    margin: 50px auto;
-    text-align: center;
-}
-
-.auth-section header {
-    margin-bottom: 30px;
-}
-
-.auth-section h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin-bottom: 10px;
-}
-
-.auth-section p {
-    color: #7f8c8d;
-    font-size: 1.1rem;
-}
-
-.auth-form h2 {
-    margin-bottom: 20px;
-    color: #2c3e50;
-}
-
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #2c3e50;
-}
-
-input[type="email"],
-input[type="password"],
-input[type="text"],
-input[type="date"],
-textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-input:focus, textarea:focus {
-    outline: none;
-    border-color: #3498db;
-}
-
-.auth-btn, .save-btn {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.auth-btn:hover, .save-btn:hover {
-    transform: translateY(-2px);
-}
-
-.auth-switch {
-    margin-top: 20px;
-    color: #7f8c8d;
-}
-
-.auth-switch a {
-    color: #3498db;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.auth-switch a:hover {
-    text-decoration: underline;
-}
-
-/* Journal App */
-.app-header {
+.appbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
-    padding: 20px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    padding: 0px 70px;
+    position: static;
+    z-index: 10;
+    background-color: #E9E9F8;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 80px;
 }
 
-.user-info h1 {
-    margin-bottom: 5px;
-    color: #2c3e50;
-}
-
-.user-info p {
-    color: #7f8c8d;
+.logo-name {
+    font-family: 'Bagel Fat One';
+    color:  #886dbe;
+    font-size: 40px;
     margin: 0;
 }
 
 .logout-btn {
-    background: #e74c3c;
+    height: 30px;
+    width: 100px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
     color: white;
+    background-color: #886dbe;
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background 0.3s ease;
-}
-
-.logout-btn:hover {
-    background: #c0392b;
-}
-
-/* Mood Form */
-.mood-form-section,
-.mood-summary-section,
-.mood-history-section {
-    background: white;
-    padding: 30px;
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
+}
+
+
+.greetings {
+    margin: 6% 3% 2% 3%;
+    font-family: 'Poppins', sans-serif;
+    color: #886dbe;
+}
+
+#userName {
+    color: #ffbb28;
+    font-style: italic;
+}
+
+.sub-greet {
+    color: #3e3a41;
+    font-size: 23px;
+}
+
+.title {
+    font-family: 'Poppins', sans-serif;
+    color: #886dbe;
+    font-size: 20px;
+}
+
+.content {
+    margin: 0% 3%;
+    min-height: 450px;
+    max-height: 600px;
+    display: flex;
+}
+
+.log-entry {
+
+    flex: 7;
+    margin-right: 10px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 2px 10px #00000026;
+    border-radius: 15px;
+    padding: 50px;
+}
+
+.overview {
+    /* width: 4%; */
+    flex: 3;
+    margin-left: 10px;
+    background-color: #E9E9F8;
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.mood {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 2%;
 }
 
 .mood-options {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 30px;
     margin-bottom: 10px;
 }
 
 .mood-btn {
     padding: 12px;
     border: 2px solid #e0e0e0;
-    border-radius: 10px;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
     background: white;
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    color: #3e3a41;
+    font-weight: 500;
 }
 
 .mood-btn:hover {
@@ -181,15 +124,41 @@ input:focus, textarea:focus {
 }
 
 .mood-btn.active {
-    border-color: #3498db;
-    background: #3498db;
-    color: white;
+    border-color: #ffbb28;
+    background: #fff6e1;
+    color: #3e3a41;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Mood History */
+.mood-label {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    color: #3e3a41;
+    margin-bottom: 1%;
+}
+
+textarea {
+    resize: none;
+    resize: vertical;
+    width: 98%;
+    border-radius: 15px;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #3e3a41;
+}
+
 .mood-history {
     display: grid;
     gap: 15px;
+    margin-top: 20px;
 }
 
 .mood-entry {
@@ -259,8 +228,127 @@ input:focus, textarea:focus {
     margin-bottom: 5px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+
+/* kevs */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Auth Pages */
+.auth-section {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.auth-section header {
+    margin-bottom: 30px;
+}
+
+.auth-section h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.auth-section p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+.auth-form h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="date"],
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.auth-btn,
+.save-btn {
+    width: 100%;
+    padding: 15px;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin-top: 20px;
+    float: right;
+    background-color: #886dbe;
+    font-family: 'Poppins', sans-serif;
+}
+
+.auth-btn:hover,
+.save-btn:hover {
+    transform: translateY(-2px);
+}
+
+.auth-switch {
+    margin-top: 20px;
+    color: #7f8c8d;
+}
+
+.auth-switch a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+
+.mood-summary-section,
+.mood-history-section {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    margin: 3%;
+    box-shadow: 0px 2px 10px #00000026;
+}
+
+
+/* @media (max-width: 768px) {
     .container {
         padding: 10px;
     }
@@ -283,4 +371,4 @@ input:focus, textarea:focus {
     .mood-emoji {
         margin-bottom: 10px;
     }
-}
+} */
